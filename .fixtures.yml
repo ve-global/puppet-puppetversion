@@ -1,0 +1,9 @@
+fixtures:
+  repositories:
+    apt: "https://github.com/puppetlabs/puppetlabs-apt"
+    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    altlib: "https://github.com/opentable/puppet-altlib.git"
+    inifile: "https://github.com/puppetlabs/puppetlabs-inifile"
+    puppetlabs_yum: "https://github.com/stahnma/puppet-module-puppetlabs_yum"
+  symlinks:
+    puppetversion: "#{source_dir}"

@@ -1,0 +1,64 @@
+param (
+[string]$ensure,
+[string]$exists
+)
+
+if ( $ensure -eq "present" ) {
+  $thisMin = [int](Get-Date -format %m)
+
+  if ( ($thisMin + <%= @time_delay %>) -ge 59) {
+    $thisMin = 0
+    $delay = <%= @time_delay %> + 1
+  } else {
+    $timeMin = $thisMin
+    $delay = <%= @time_delay %>
+  }
+
+  $plusTime = $timeMin + $delay
+  $thisHour = (Get-Date -format HH)
+
+  $startTime = "$thisHour`:$plusTime"
+
+  $scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
+
+  $doesNotExist = $scheduledTask[0].ToString().StartsWith("ERROR")
+
+  if ( $doesNotExist ) {
+    schtasks /create /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU "NT AUTHORITY\LOCALSERVICE"
+  } else {
+    $today = (Get-Date -f "MM/dd/yyyy")
+    schtasks /change /TN "puppet upgrade task" /SD $today /ST $startTime /RU "NT AUTHORITY\LOCALSERVICE"
+  }
+
+
+  Exit 0
+} elseif ( $ensure -eq "absent" ) {
+  schtasks /delete /F /TN "puppet upgrade task"
+  Exit 0
+}
+
+$scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
+
+$doesNotExist = $scheduledTask[0].ToString().StartsWith("ERROR")
+
+if ( $exists -eq "True" ) {
+
+  if ( $doesNotExist ) {
+    Exit 1
+  } else {
+
+    $t = ($scheduledTask[21] -split "\s+")[2]
+    $taskDate = [DateTime]::ParseExact($t,"hh:mm:ss",$null)
+
+    $timeNewer = ((Get-Date).AddMinutes(10))
+    $timeOlder = ((Get-Date).AddMinutes(-10))
+
+
+    if ( ($taskDate -lt $timeOlder) -or ($taskDate -gt $timeNewer) ) {
+      Exit 1
+    } else {
+      Exit 0
+    }
+  }
+
+}

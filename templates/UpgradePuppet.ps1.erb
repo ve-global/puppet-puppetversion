@@ -1,0 +1,85 @@
+param (
+  [Parameter(Mandatory=$true)]
+  [string]$version
+)
+
+$sourceMsi = "<%= @download_source %>/puppet-$version.msi"
+$destMsi = "C:\Windows\Temp\puppet-$version.msi"
+
+$majorVersion = [System.Environment]::OSVersion.Version.Major
+if ($majorVersion -eq 5) {
+  $sourceConf = "C:\Documents and Settings\All Users\Application Data\PuppetLabs\puppet\etc\puppet.conf"
+} else {
+  $sourceConf = "C:\ProgramData\PuppetLabs\puppet\etc\puppet.conf"
+}
+
+
+$destConf = "C:\Windows\Temp\puppet.conf"
+
+$uninstallLog = "C:\Windows\Temp\uninstall_puppet.log"
+$installLog = "C:\Windows\Temp\install_puppet.log"
+
+$source = @"
+public class PuppetVersion {
+  public string version;
+  public string uninstallKey;
+
+  public PuppetVersion(string version, string uninstallKey) {
+     this.version = version;
+     this.uninstallKey = uninstallKey;
+  }
+}
+"@
+
+Add-Type -TypeDefinition $source -Language CSharp
+
+$keysObj = @(
+  (New-Object PuppetVersion("3.1.0", "{7E26D494-3A11-4070-83BF-D9AB37497129}")),
+  (New-Object PuppetVersion("3.1.1", "{13AF27B5-4248-4287-B736-730CFCE054B9}")),
+  (New-Object PuppetVersion("3.2.3", "{2B0B4B8B-FFE1-4E11-AFE5-931BF3AD071F}")),
+  (New-Object PuppetVersion("3.3.1", "{A914F14A-4862-46D3-A5FC-577E4DCAADFF}"))
+);
+
+
+$currentVersion = (((& 'C:\Program Files (x86)\Puppet Labs\Puppet\bin\facter.bat' | Out-string) -split "`n" | select-string puppetversion).ToString().Split(" => ")[4]).Trim()
+
+$uninstallKey = ""
+foreach($i in $keysObj) {
+  if($i.version -eq $currentVersion) {
+    $uninstallKey = $i.uninstallKey;
+    break;
+  }
+}
+
+$wc = New-Object System.Net.WebClient
+
+$proxyAddress = '<%= @proxy_address %>'
+if ($proxyAddress -ne '') {
+  if (!$proxyAddress.StartsWith('http://')) {
+    $proxyAddress = 'http://' + $proxyAddress
+  }
+  
+  $proxy = new-object System.Net.WebProxy
+  $proxy.Address = $proxyAddress
+  $wc.proxy = $proxy
+}
+
+$wc.DownloadFile($sourceMsi, $destMsi)
+
+Copy-Item "$sourceConf" -Destination $destConf
+
+Wait-Process -name ruby -timeout 30 -ErrorAction SilentlyContinue
+$xp = (Start-Process -FilePath "msiexec.exe" -ArgumentList "/x $uninstallKey /qn /l*v $uninstallLog" -Wait -Passthru).ExitCode
+if ( $xp -ne 0 ) { Exit 1 }
+
+Wait-Process -name msiexec -timeout 30 -ErrorAction SilentlyContinue
+$ip = (Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\Windows\Temp\puppet-$version.msi /qn /l*v $installLog" -Wait -Passthru).ExitCode
+if ( $ip -ne 0 ) { Exit 1 }
+
+Copy-Item $destConf -Destination "$sourceConf" -Force
+
+Wait-Process -name msiexec -timeout 30 -ErrorAction SilentlyContinue
+Remove-Item $destMsi
+Remove-Item $destConf
+Remove-Item $uninstallLog
+Remove-Item $installLog

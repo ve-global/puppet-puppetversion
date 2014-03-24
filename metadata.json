@@ -1,0 +1,49 @@
+{
+  "operatingsystem_support": [
+	{ "operatingsystem": "Debian" },
+    { "operatingsystem": "Ubuntu" },
+    { "operatingsystem": "RedHat" },
+    { "operatingsystem": "CentOS" },
+    { "operatingsystem": "Windows" },
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.2.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "name":         "opentable-puppetversion",
+  "version":      "0.1.0",
+  "source":       "git://github.com/opentable/puppet-puppetversion.git",
+  "author":       "opentable",
+  "summary":      "Module for managing the installation and upgrade of puppet",
+  "description":  "Install and upgrade puppet consistently across versions and platforms",
+  "project_page": "https://github.com/opentable/puppet-puppetversion",
+  "license":      "MIT",
+  "dependencies": [
+    {
+	  "name": "puppetlabs/stdlib",
+	  "version_requirement": ">= 3.0.0"  	
+	},
+    {
+       "name": "puppetlabs/apt",
+       "version_requirement": ">= 1.4.0"
+    },
+    {
+       "name": "puppetlabs/inifile",
+       "version_requirement": ">= 1.0.3"
+    },
+    {
+       "name": "stahnma/puppetlabs_yum",
+       "version_requirement": ">= 0.1.4"
+    },
+    {
+       "name": "opentable/altlib",
+       "version_requirement": ">= 0.2.0"
+    }
+  ]
+}
