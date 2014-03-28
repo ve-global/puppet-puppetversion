@@ -79,7 +79,7 @@ describe 'puppetversion', :type => :class do
 
     it { should contain_file('UpgradePuppet script').with(
       'ensure' => 'present',
-      'path'   => 'C:/Windows/Temp/UpgradePuppet.ps1',  
+      'path'   => 'C:/Windows/Temp/UpgradePuppet.ps1'
     )}
 
     it { should contain_exec('create scheduled task').with(
