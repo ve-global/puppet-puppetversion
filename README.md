@@ -31,9 +31,9 @@ with all of those edge cases, making upgrades as simple as they should be.
 * The installation of puppet itself.
 * Create a scheduled task (on Windows)
 
-###Beginning with homes
+###Beginning with puppetversion
 
-To create a new local user:
+To upgrade to a new puppetversion
 
 ```puppet
    puppetversion { 'version 3.4.3':
