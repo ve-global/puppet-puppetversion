@@ -13,21 +13,23 @@
 
 ##Overview
 
-$$$$$$$$$$$$$$
+The puppetversion module for managing the upgrade/downgrade of puppet to a specified version
 
 [![Build
 Status](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)
 
 ##Module Description
 
-$$$$$$$$$$$$$$
+The purpose of this module is to manage puppet upgrades. This was created because performing upgrades on on some platforms and some older
+versions of puppet requires a little more effort than simply ```package { 'puppet': ensure => '3.4.3' }```. This module intends to deal
+with all of those edge cases, making upgrades as simple as they should be.
 
 ##Setup
 
 ###What puppetversion affects
 
-*
-
+* The installation of puppet itself.
+* Create a scheduled task (on Windows)
 
 ###Beginning with homes
 
@@ -53,7 +55,9 @@ The version that you want to upgrade to
 
 ##Reference
 
-$$$$$$$$$$$$$$$
+###Classes
+####Public Classes
+* [`puppetversion`](#class-puppetversion): Guides the upgrade of puppet from the current version to the specified new version
 
 ##Limitations
 

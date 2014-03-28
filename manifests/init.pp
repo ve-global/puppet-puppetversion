@@ -1,8 +1,38 @@
+# == Class: puppetversion
+#
+# The puppetversion module for managing the upgrade/downgrade of puppet to a specified version
+#
+# === Requirements/Dependencies
+#
+# Currently reequires the puppetlabs/stdlib module on the Puppet Forge in
+# order to validate much of the the provided configuration.
+#
+# === Parameters
+#
+# [*version*]
+# The version of puppet to be installed
+#
+# [*proxy_adress*]
+# (Windows only) - The proxy address to use when downloading the msi
+#
+# [*start_time*]
+# (Windows only) - The start time is the local time to start the scheduled task to upgrade puppet
+#
+# [*download_source]
+# (Windows only) - The source location where the msi can be found
+#
+# === Examples
+#
+# Installing puppet to a specified version
+#
+# class { 'puppetversion':
+#   version    => '3.4.3'
+# }
 #
 class puppetversion(
   $version = $puppetversion::params::version,
-  $start_time = $puppetversion::params::start_time,
   $proxy_address = $puppetversion::params::proxy_address,
+  $start_time = $puppetversion::params::start_time,
   $download_source = $puppetversion::params::download_source
 ) inherits puppetversion::params {
 
