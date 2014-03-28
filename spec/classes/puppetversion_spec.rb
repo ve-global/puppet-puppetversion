@@ -12,9 +12,7 @@ describe 'puppetversion', :type => :class do
 
     let(:params) {{ :version => '3.4.2'}}
 
-    it { should contain_package('puppet')
-      .with_ensure('3.4.2-1puppetlabs1')
-    }
+    it { should contain_package('puppet').with_ensure('3.4.2-1puppetlabs1') }
 
     it { should contain_package('puppet-common')
       .with_ensure('3.4.2-1puppetlabs1')
