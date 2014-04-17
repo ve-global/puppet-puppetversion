@@ -5,17 +5,11 @@ GIT
     rspec-puppet (1.0.1)
       rspec
 
-GEM
-  remote: https://rubygems.org/
+PATH
+  remote: /Users/liamjbennett/Dev/beaker
   specs:
-    CFPropertyList (2.2.7)
-    addressable (2.3.6)
-    autoparse (0.3.3)
-      addressable (>= 2.3.1)
-      extlib (>= 0.9.15)
-      multi_json (>= 1.0.0)
-    backports (3.6.0)
     beaker (1.9.1)
+      aws-sdk (~> 1.38)
       blimpy (~> 0.6)
       fission (~> 0.4)
       google-api-client (~> 0.6.4)
@@ -27,6 +21,24 @@ GEM
       nokogiri (= 1.5.10)
       rbvmomi (= 1.8.1)
       unf (~> 0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    CFPropertyList (2.2.7)
+    addressable (2.3.6)
+    akami (1.2.1)
+      gyoku (>= 0.4.0)
+      nokogiri
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
+    aws-sdk (1.38.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
+    backports (3.6.0)
     beaker-rspec (2.2.2)
       beaker (~> 1.9.1)
       rspec (~> 2.14)
@@ -84,6 +96,8 @@ GEM
       multi_json (>= 1.0.0)
       signet (~> 0.4.5)
       uuidtools (>= 2.1.0)
+    gssapi (1.0.3)
+      ffi (>= 1.0.1)
     guard (2.6.0)
       formatador (>= 0.2.4)
       listen (~> 2.7)
@@ -93,10 +107,15 @@ GEM
     guard-rake (0.0.9)
       guard
       rake
+    gyoku (1.1.1)
+      builder (>= 2.1.2)
     hashr (0.0.22)
     hiera (1.3.2)
       json_pure
     highline (1.6.21)
+    httpclient (2.3.4.1)
+    httpi (0.9.7)
+      rack
     inifile (2.0.2)
     json (1.8.1)
     json_pure (1.8.1)
@@ -109,6 +128,10 @@ GEM
       celluloid-io (>= 0.15.0)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
+    little-plugger (1.1.3)
+    logging (1.8.2)
+      little-plugger (>= 1.1.3)
+      multi_json (>= 1.8.4)
     lumberjack (1.0.5)
     metaclass (0.0.4)
     method_source (0.8.2)
@@ -120,16 +143,17 @@ GEM
     multipart-post (1.2.0)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
-    net-scp (1.1.2)
+    net-scp (1.2.0)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
     nio4r (1.0.0)
     nokogiri (1.5.10)
+    nori (1.1.5)
     pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    puppet (3.3.2)
+    puppet (3.4.3)
       facter (~> 1.6)
       hiera (~> 1.0)
       rgen (~> 0.6.5)
@@ -146,9 +170,11 @@ GEM
       rake
       rspec (>= 2.9.0)
       rspec-puppet (>= 0.1.1)
-    pusher-client (0.4.0)
-      websocket (~> 1.0.0)
-    rake (10.2.2)
+    pusher-client (0.5.0)
+      json
+      websocket (~> 1.1.2)
+    rack (1.5.2)
+    rake (10.3.0)
     rb-fsevent (0.9.4)
     rb-inotify (0.9.3)
       ffi (>= 0.5.0)
@@ -168,7 +194,16 @@ GEM
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.14.6)
     ruby-hmac (0.4.0)
+    rubyntlm (0.1.1)
     safe_yaml (0.9.7)
+    savon (0.9.5)
+      akami (~> 1.0)
+      builder (>= 2.1.2)
+      gyoku (>= 0.4.0)
+      httpi (~> 0.9)
+      nokogiri (>= 1.4.0)
+      nori (~> 1.0)
+      wasabi (~> 1.0)
     serverspec (1.0.0)
       highline
       net-ssh
@@ -180,10 +215,10 @@ GEM
       jwt (>= 0.1.5)
       multi_json (>= 1.0.0)
     slop (3.5.0)
-    specinfra (1.0.0)
+    specinfra (1.0.5)
     thor (0.19.1)
     timers (1.1.0)
-    travis (1.6.8)
+    travis (1.6.9)
       addressable (~> 2.3)
       backports
       faraday (~> 0.8.7)
@@ -200,27 +235,39 @@ GEM
     trollop (2.0)
     typhoeus (0.6.8)
       ethon (>= 0.7.0)
-    unf (0.1.3)
+    unf (0.1.4)
       unf_ext
     unf_ext (0.0.6)
     uuidtools (2.1.4)
     vagrant-wrapper (1.2.1.1)
-    websocket (1.0.7)
+    wasabi (1.0.0)
+      nokogiri (>= 1.4.0)
+    websocket (1.1.2)
+    winrm (1.1.3)
+      gssapi (~> 1.0.0)
+      httpclient (~> 2.2, >= 2.2.0.2)
+      logging (~> 1.6, >= 1.6.1)
+      nokogiri (~> 1.5)
+      rubyntlm (~> 0.1.1)
+      savon (= 0.9.5)
+      uuidtools (~> 2.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  beaker
+  beaker!
   beaker-rspec
   guard-rake
-  puppet (~> 3.3.0)
+  puppet (~> 3.4.0)
   puppet-blacksmith
   puppet-lint
   puppet-syntax
   puppetlabs_spec_helper
   rake
   rspec-puppet!
+  specinfra (>= 1.0.1)
   travis
   travis-lint
   vagrant-wrapper
+  winrm
