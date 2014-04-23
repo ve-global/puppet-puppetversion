@@ -65,8 +65,8 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
         }
       PP
 
-      apply_manifest(pp, :module_path => '/etc/puppet/modules', :catch_failures => true)
-      expect(apply_manifest(pp, :module_path => '/etc/puppet/modules', :catch_failures => true).exit_code).to be_zero
+      apply_manifest(pp, :modulepath => '/etc/puppet/modules', :catch_failures => true)
+      expect(apply_manifest(pp, :modulepath => '/etc/puppet/modules', :catch_failures => true).exit_code).to be_zero
     end
 
     describe file('/etc/yum.repos.d/puppetlabs.repo') do
@@ -88,7 +88,7 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
         }
       PP
 
-      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      expect(apply_manifest(pp, :modulepath => 'C:/ProgramData/PuppetLabs/puppet/etc/modules', :catch_failures => true).exit_code).to be_zero
     end
 
     describe package('Puppet') do

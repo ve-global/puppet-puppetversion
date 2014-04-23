@@ -33,3 +33,14 @@ task :test => [
     :lint,
     :spec,
 ]
+
+desc "Run acceptance tests against all nodesets"
+task :acceptance do
+  Dir.foreach('spec/acceptance/nodesets/') do |item|
+    next if item == '.' or item == '..'
+    if item.end_with?('.yml') && !item.eql?('default.yml')
+      name = item[0, item.length - 4]
+      system "BEAKER_set=#{name} BEAKER_debug=yes bundle exec rspec spec/acceptance"
+    end
+  end
+end

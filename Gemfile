@@ -7,8 +7,8 @@ group :test do
   gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
-  gem "beaker", :git => 'https://github.com/liamjbennett/beaker'
-  gem "beaker-rspec"
+  gem "beaker", :git => 'https://github.com/liamjbennett/beaker', :branch => 'windows_fixes'
+  gem "beaker-rspec", :git => 'https://github.com/liamjbennett/beaker-rspec', :branch => 'windows_fixes'
   gem "specinfra", '>= 1.0.1'
   gem "winrm"
 end
