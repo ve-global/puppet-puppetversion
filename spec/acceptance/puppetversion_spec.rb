@@ -96,4 +96,31 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
     end
   end
 
+  context 'upgrade on windows', :if => fact('osfamily').eql?('windows') do
+
+    it 'should install the new version' do
+      pp = <<-PP
+
+        class { 'puppetversion':
+          version => '3.5.1'
+        }
+      PP
+
+      apply_manifest(pp, :modulepath => 'C:/ProgramData/PuppetLabs/puppet/etc/modules', :catch_failures => true)
+      expect(apply_manifest(pp, :modulepath => 'C:/ProgramData/PuppetLabs/puppet/etc/modules', :catch_failures => true).exit_code).to be_zero
+    end
+
+    describe windows_scheduled_task('puppet upgrade task') do
+      it { should exist }
+    end
+
+    describe package('puppet') do
+      it {
+        p "sleeping .."
+        sleep(500) #Wait for the task to execute
+        should be_installed.with_version('3.5.1')
+      }
+    end
+  end
+
 end

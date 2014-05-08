@@ -9,7 +9,8 @@ group :test do
   gem "puppetlabs_spec_helper"
   gem "beaker", :git => 'https://github.com/liamjbennett/beaker', :branch => 'windows_fixes'
   gem "beaker-rspec", :git => 'https://github.com/liamjbennett/beaker-rspec', :branch => 'windows_fixes'
-  gem "specinfra", '>= 1.0.1'
+  gem "serverspec", '~> 1.6.0'
+  gem "specinfra", '~> 1.11.0'
   gem "winrm"
 end
 

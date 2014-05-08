@@ -3,6 +3,8 @@ param (
 [string]$exists
 )
 
+$scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
+
 if ( $ensure -eq "present" ) {
   $thisMin = [int](Get-Date -format %m)
 
@@ -14,22 +16,17 @@ if ( $ensure -eq "present" ) {
     $delay = <%= @time_delay %>
   }
 
-  $plusTime = $timeMin + $delay
+  $plusTime = ([string]($timeMin + $delay)).PadLeft(1,'0')
   $thisHour = (Get-Date -format HH)
 
   $startTime = "$thisHour`:$plusTime"
 
-  $scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
-
-  $doesNotExist = $scheduledTask[0].ToString().StartsWith("ERROR")
-
-  if ( $doesNotExist ) {
-    schtasks /create /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU "NT AUTHORITY\LOCALSERVICE"
+  if ( $LASTEXITCODE ) {
+    schtasks /create /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU SYSTEM
   } else {
     $today = (Get-Date -f "MM/dd/yyyy")
-    schtasks /change /TN "puppet upgrade task" /SD $today /ST $startTime /RU "NT AUTHORITY\LOCALSERVICE"
+    schtasks /change /TN "puppet upgrade task" /SD $today /ST $startTime /RU SYSTEM
   }
-
 
   Exit 0
 } elseif ( $ensure -eq "absent" ) {
@@ -37,27 +34,35 @@ if ( $ensure -eq "present" ) {
   Exit 0
 }
 
-$scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
-
-$doesNotExist = $scheduledTask[0].ToString().StartsWith("ERROR")
-
 if ( $exists -eq "True" ) {
 
-  if ( $doesNotExist ) {
+  if ( $LASTEXITCODE ) {
     Exit 1
   } else {
 
-    $t = ($scheduledTask[21] -split "\s+")[2]
-    $taskDate = [DateTime]::ParseExact($t,"hh:mm:ss",$null)
+    $st = ($scheduledTask[21] -split "\s+")[2]
 
-    $timeNewer = ((Get-Date).AddMinutes(10))
-    $timeOlder = ((Get-Date).AddMinutes(-10))
+    if ($st) {
+
+      $h = (($st -split ":")[0]).PadLeft(2,'0')
+      $m = (($st -split ":")[0]).PadLeft(2,'0')
+      $s = (($st -split ":")[0]).PadLeft(2,'0')
+
+      $t = "$h`:$m`:$s"
+
+      $taskDate = [DateTime]::ParseExact($t,"hh:mm:ss",$null)
+
+      $timeNewer = ((Get-Date).AddMinutes(10))
+      $timeOlder = ((Get-Date).AddMinutes(-10))
 
 
-    if ( ($taskDate -lt $timeOlder) -or ($taskDate -gt $timeNewer) ) {
-      Exit 1
+      if ( ($taskDate -lt $timeOlder) -or ($taskDate -gt $timeNewer) ) {
+        Exit 0
+      } else {
+        Exit 1
+      }
     } else {
-      Exit 0
+      Exit 1
     }
   }
 

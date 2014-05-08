@@ -9,15 +9,9 @@ hosts.each do |host|
       include Serverspec::Helper::Windows
       include Serverspec::Helper::WinRM
 
-      #version = ENV['PUPPET_VERSION'] || '3.4.3'
+      version = ENV['PUPPET_VERSION'] || '3.4.3'
 
-      install_puppet(:version => '3.4.3')
-
-      #Because puppet_module_install doesn't create the directory if it's missing
-      on host, 'mkdir -p /cygdrive/c/ProgramData/PuppetLabs/puppet/etc/modules'
-
-      #Because the msi installer doesn't add Puppet to the environment path
-      on host, %q{ echo 'export PATH=$PATH:"/cygdrive/c/Program Files (x86)/Puppet Labs/Puppet/bin"' > /etc/bash.bashrc }
+      install_puppet(:version => version)
 
     else
       # TODO: This function needs some work in beaker because it doesn't work when specifying the version
@@ -49,11 +43,11 @@ RSpec.configure do |c|
 
       puppet_module_install(:source => proj_root, :module_name => 'puppetversion')
 
-      on host, puppet(host, 'module','install', forge_repo, 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet(host, 'module', 'install', forge_repo, 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet(host, 'module', 'install', forge_repo, 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet(host, 'module', 'install', forge_repo, 'stahnma-puppetlabs_yum'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet(host, 'module', 'install', forge_repo, 'opentable-altlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module','install', forge_repo, 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', forge_repo, 'puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', forge_repo, 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', forge_repo, 'stahnma-puppetlabs_yum'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', forge_repo, 'opentable-altlib'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
