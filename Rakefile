@@ -33,3 +33,16 @@ task :test => [
     :lint,
     :spec,
 ]
+
+desc "Run acceptance tests against all nodesets"
+task :spec_acceptance do
+  puppet_version = ENV['PUPPET_VERSION'] || '3.4.3'
+
+  Dir.foreach('spec/acceptance/nodesets/') do |item|
+    next if item == '.' or item == '..'
+    if item.end_with?('.yml') && !item.eql?('default.yml') && item.include?('windows')
+      name = item[0, item.length - 4]
+      system "PUPPET_VERSION=#{puppet_version} BEAKER_set=#{name} BEAKER_debug=yes bundle exec rspec spec/acceptance"
+    end
+  end
+end
