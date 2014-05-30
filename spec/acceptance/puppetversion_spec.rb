@@ -91,7 +91,7 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
       expect(apply_manifest(pp, :modulepath => 'C:/ProgramData/PuppetLabs/puppet/etc/modules', :catch_failures => true).exit_code).to be_zero
     end
 
-    describe package('Puppet') do
+    describe package('puppet') do
       it { should be_installed }
     end
   end
@@ -102,7 +102,8 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
       pp = <<-PP
 
         class { 'puppetversion':
-          version => '3.5.1'
+          version => '3.5.1',
+          time_delay => 1
         }
       PP
 
@@ -114,11 +115,26 @@ describe 'puppetversion', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfami
       it { should exist }
     end
 
+    #This will fail if your laptop (and therefor the vagrant vm) is not running on AC power
     describe package('puppet') do
       it {
-        p "sleeping .."
-        sleep(500) #Wait for the task to execute
+        sleep(240) #Wait for the task to execute
         should be_installed.with_version('3.5.1')
+      }
+    end
+
+    describe windows_scheduled_task('puppet upgrade task') do
+      it {
+        pp = <<-PP
+
+        class { 'puppetversion':
+          version => '3.5.1'
+        }
+        PP
+
+        apply_manifest(pp, :modulepath => 'C:/ProgramData/PuppetLabs/puppet/etc/modules', :catch_failures => true)
+
+        should_not exist
       }
     end
   end

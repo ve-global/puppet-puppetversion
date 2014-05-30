@@ -33,7 +33,8 @@ class puppetversion(
   $version = $puppetversion::params::version,
   $proxy_address = $puppetversion::params::proxy_address,
   $start_time = $puppetversion::params::start_time,
-  $download_source = $puppetversion::params::download_source
+  $download_source = $puppetversion::params::download_source,
+  $time_delay = $puppetversion::params::time_delay
 ) inherits puppetversion::params {
 
   case downcase($::osfamily) {

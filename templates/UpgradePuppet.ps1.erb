@@ -43,6 +43,6 @@ if ( $ip -ne 0 ) { Exit 1 }
 Copy-Item $destConf -Destination "$sourceConf" -Force
 
 Wait-Process -name msiexec -timeout 30 -ErrorAction SilentlyContinue
-#Remove-Item $destMsi
-#Remove-Item $destConf
-#Remove-Item $installLog
+Remove-Item $destMsi
+Remove-Item $destConf
+Remove-Item $installLog
