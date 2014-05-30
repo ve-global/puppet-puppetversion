@@ -1,5 +1,5 @@
 name         'opentable-puppetversion'
-version      '0.1.2'
+version      '0.1.3'
 source       'git://github.com/opentable/puppet-puppetversion.git'
 author       'opentable'
 summary      'Module for managing the installation and upgrade of puppet'
