@@ -3,7 +3,7 @@ param (
 [string]$exists
 )
 
-$scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task" 2>&1
+$scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task"
 
 if ( $ensure -eq "present" ) {
   $thisMin = [int](Get-Date -format %m)
@@ -21,7 +21,7 @@ if ( $ensure -eq "present" ) {
 
   $startTime = "$thisHour`:$plusTime"
 
-  if ( $LASTEXITCODE ) {
+  if ( $scheduledTask -eq $null ) {
     schtasks /create /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU SYSTEM
   } else {
     $today = (Get-Date -f "MM/dd/yyyy")
