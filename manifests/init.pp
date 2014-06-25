@@ -105,13 +105,14 @@ class puppetversion(
           ensure  => present,
           path    => 'C:/Windows/Temp/ScheduledTask.ps1',
           content => template('puppetversion/ScheduledTask.ps1.erb'),
-          require => File['UpgradePuppet script']
+          require => File['UpgradePuppet script'],
+          notify  => Exec['create scheduled task']
         }
 
         exec { 'create scheduled task':
-          command => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
-          require => File['ScheduleTask script'],
-          unless  => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -exists True'
+          command     => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
+          require     => File['ScheduleTask script'],
+          refreshonly => true
         }
 
       } else {
