@@ -24,8 +24,7 @@ if ( $ensure -eq "present" ) {
   if ( $scheduledTask -eq $null ) {
     schtasks /create /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU SYSTEM
   } else {
-    $today = (Get-Date -f "MM/dd/yyyy")
-    schtasks /change /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /SC Once /ST $startTime /RU SYSTEM
+    schtasks /change /TN "puppet upgrade task" /TR "C:\Windows\system32\WindowsPowershell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\UpgradePuppet.ps1 -version <%= @version %>" /ST $startTime /RU SYSTEM
   }
 
   Exit 0
