@@ -6,3 +6,7 @@ spec/fixtures
 .idea
 *.iml
 log
+.kitchen/
+.kitchen.local.yml
+.tmp/
+modules/

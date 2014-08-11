@@ -7,11 +7,14 @@ group :test do
   gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper", "0.4.1"
-  gem "beaker", :git => 'https://github.com/liamjbennett/beaker', :branch => 'windows_fixes'
-  gem "beaker-rspec", :git => 'https://github.com/liamjbennett/beaker-rspec', :branch => 'windows_fixes'
-  gem "serverspec", '~> 1.6.0'
   gem "specinfra", '~> 1.11.0'
   gem "winrm"
+  gem 'kitchen-vagrant',
+    :git => 'https://github.com/afiune/kitchen-vagrant',
+    :ref => 'WinRM'
+  gem 'test-kitchen', :path => '/Users/liamjbennett/Dev/forks/test-kitchen'
+  gem 'kitchen-puppet', :path => '/Users/liamjbennett/Dev/public/kitchen-puppet'
+  gem 'librarian-puppet'
 end
 
 group :development do

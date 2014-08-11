@@ -1,0 +1,34 @@
+---
+test_base_path: test/integration/windows_default/serverspec/manifests
+
+driver:
+  name: vagrant
+  timeout_in_seconds: 3600
+  test_base_path: test/integration/windows_default/serverspec/manifests
+
+provisioner:
+  name: puppet_apply
+  modules_path: modules
+  hiera_data_path: hiera
+  sudo: false
+  puppet_version: 3.4.2
+  puppet_platform: windows
+  test_base_path: test/integration/windows_default/serverspec/manifests
+
+platforms:
+  - name: windows-2008-serverstandard-x64
+    driver_plugin: vagrant
+    driver_config:
+      box : win-2008-standard-amd64-nocm
+      box_url : "/Users/liamjbennett/Dev/public/packer-images/windows/templates/windows-2008R2-serverstandard-amd64/windows-2008R2-serverstandard-amd64_virtualbox.box"
+      username: Administrator
+      guest: :windows
+    test_base_path: test/integration/windows_default/serverspec/manifests
+
+suites:
+  - name: windows_default
+    provisioner:
+      test_base_path: test/integration/windows_default/serverspec/manifests
+  #- name: windows_new
+  #  manifests_path: test/integration/windows_new/serverspec/manifests
+  #  manifest: windows_new.pp

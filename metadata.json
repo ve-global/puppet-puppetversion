@@ -25,25 +25,6 @@
   "project_page": "https://github.com/opentable/puppet-puppetversion",
   "license":      "MIT",
   "dependencies": [
-    {
-	  "name": "puppetlabs/stdlib",
-	  "version_requirement": ">= 3.0.0"  	
-	},
-    {
-       "name": "puppetlabs/apt",
-       "version_requirement": ">= 1.4.0"
-    },
-    {
-       "name": "puppetlabs/inifile",
-       "version_requirement": ">= 1.0.0"
-    },
-    {
-       "name": "stahnma/puppetlabs_yum",
-       "version_requirement": ">= 0.1.4"
-    },
-    {
-       "name": "opentable/altlib",
-       "version_requirement": ">= 0.2.0"
-    }
+
   ]
 }
