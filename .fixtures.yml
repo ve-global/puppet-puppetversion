@@ -1,6 +1,8 @@
 fixtures:
   repositories:
-    apt: "https://github.com/puppetlabs/puppetlabs-apt"
+    apt:
+      repo: "https://github.com/bobtfish/puppetlabs-apt"
+      ref: master
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
     altlib: "https://github.com/opentable/puppet-altlib.git"
     inifile: "https://github.com/puppetlabs/puppetlabs-inifile"

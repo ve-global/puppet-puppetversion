@@ -7,7 +7,7 @@ describe 'puppetversion', :type => :class do
         :osfamily        => 'debian',
         :lsbdistid       => 'ubuntu',
         :lsbdistcodename => 'squeeze',
-        :agent_rundir    => '/var/lib/puppet/run',
+        :agent_rundir    => '/var/lib/puppet/run'
     } }
 
     let(:params) {{ :version => '3.4.2'}}
@@ -41,7 +41,7 @@ describe 'puppetversion', :type => :class do
         :osfamily        => 'debian',
         :lsbdistid       => 'ubuntu',
         :lsbdistcodename => 'squeeze',
-        :agent_rundir    => '/var/lib/puppet/run',
+        :agent_rundir    => '/var/lib/puppet/run'
     } }
 
     let(:params) {{ :version => '3.4.3'}}
@@ -58,22 +58,27 @@ describe 'puppetversion', :type => :class do
   end
 
   context 'when trying to ensure the puppet version is 3.4.2 on redhat' do
-    let(:facts) { {
-        :osfamily  => 'redhat'
-    } }
+    let(:facts) {{
+      :osfamily        => 'redhat',
+      :operatingsystem => 'centos',
+      :os_maj_version  => '6',
+      :architecture    => 'amd64',
+      :pper_installed  => 'false'
+    }}
 
     let(:params) {{ :version => '3.4.2'}}
 
     it { should contain_package('puppet').with_ensure('3.4.2-1.el6').that_requires('Class[puppetlabs_yum]') }
 
-    it {should contain_class('puppetlabs_yum') }
+    it { should contain_class('puppetlabs_yum') }
 
   end
 
   context 'when trying to ensure the puppet version is 3.4.2 on windows with default params' do
-    let(:facts) { {
-        :osfamily  => 'windows'
-    } }
+    let(:facts) {{
+      :osfamily      => 'windows',
+      :puppetversion => '3.4.1'
+    }}
 
     let(:params) {{ :version => '3.4.2'}}
 
