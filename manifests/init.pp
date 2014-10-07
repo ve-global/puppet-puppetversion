@@ -57,9 +57,9 @@ class puppetversion(
         require     => Exec['rm_duplicate_puppet_source']
       }
 
-      package {$puppetPackages:
-        ensure   => "${version}-1puppetlabs1",
-        require  => Apt::Source['puppetlabs']
+      package { $puppetPackages:
+        ensure  => "${version}-1puppetlabs1",
+        require => Apt::Source['puppetlabs']
       }
 
       ini_setting { 'update init.d script PIDFILE to use agent_rundir':
