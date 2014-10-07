@@ -15,9 +15,6 @@
 # [*proxy_adress*]
 # (Windows only) - The proxy address to use when downloading the msi
 #
-# [*start_time*]
-# (Windows only) - The start time is the local time to start the scheduled task to upgrade puppet
-#
 # [*download_source]
 # (Windows only) - The source location where the msi can be found
 #
@@ -32,7 +29,6 @@
 class puppetversion(
   $version = $puppetversion::params::version,
   $proxy_address = $puppetversion::params::proxy_address,
-  $start_time = $puppetversion::params::start_time,
   $download_source = $puppetversion::params::download_source,
   $time_delay = $puppetversion::params::time_delay
 ) inherits puppetversion::params {
