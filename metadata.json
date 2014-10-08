@@ -1,49 +1,47 @@
 {
-  "operatingsystem_support": [
-	{ "operatingsystem": "Debian" },
-    { "operatingsystem": "Ubuntu" },
-    { "operatingsystem": "RedHat" },
-    { "operatingsystem": "CentOS" },
-    { "operatingsystem": "Windows" }
-  ],
-  "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": "3.2.x"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": "3.x"
-    }
-  ],
   "name":         "opentable-puppetversion",
   "version":      "0.1.3",
-  "source":       "git://github.com/opentable/puppet-puppetversion.git",
   "author":       "opentable",
-  "summary":      "Module for managing the installation and upgrade of puppet",
-  "description":  "Install and upgrade puppet consistently across versions and platforms",
-  "project_page": "https://github.com/opentable/puppet-puppetversion",
   "license":      "MIT",
+  "summary":      "Module for managing the installation and upgrade of puppet",
+  "source":       "https://github.com/opentable/puppet-puppetversion",
+  "project_page": "https://github.com/opentable/puppet-puppetversion",
+  "issues_url":   "https://github.com/opentable/puppet-puppetversion/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["5.0","6.0"]
+    },
+    { "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["5.0","6.0"]
+    },
+    { "operatingsystem": "Debian",
+      "operatingsystemrelease": ["6.0","7.0"]
+    },
+    { "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["12.04","14.04"]
+    }
+  ],
   "dependencies": [
     {
-	  "name": "puppetlabs/stdlib",
-	  "version_requirement": ">= 3.0.0"  	
-	},
+       "name": "puppetlabs/stdlib",
+       "version_requirement": ">= 3.0.0 <5.0.0"
+    },
     {
        "name": "puppetlabs/apt",
-       "version_requirement": ">= 1.4.0"
+       "version_requirement": ">= 1.4.0 <2.0.0"
     },
     {
        "name": "puppetlabs/inifile",
-       "version_requirement": ">= 1.0.0"
+       "version_requirement": ">= 1.0.0 <2.0.0"
     },
     {
        "name": "stahnma/puppetlabs_yum",
-       "version_requirement": ">= 0.1.4"
+       "version_requirement": ">= 0.1.4 <1.0.0"
     },
     {
        "name": "opentable/altlib",
-       "version_requirement": ">= 0.2.0"
+       "version_requirement": ">= 0.2.0 <1.0.0"
     }
   ]
 }

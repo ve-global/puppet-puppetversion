@@ -1,3 +1,7 @@
+# Author::    Liam Bennett (mailto:lbennett@opentable.com)
+# Copyright:: Copyright (c) 2013 OpenTable Inc
+# License::   MIT
+
 # == Class: puppetversion
 #
 # The puppetversion module for managing the upgrade/downgrade of puppet to a specified version
