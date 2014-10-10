@@ -17,8 +17,7 @@
 
 The puppetversion module for managing the upgrade/downgrade of puppet to a specified version
 
-[![Build
-Status](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)
+[![Build Status](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)](https://secure.travis-ci.org/opentable/puppet-puppetversion.png)
 
 ##Module Description
 
