@@ -1,12 +1,13 @@
 {
   "name":         "opentable-puppetversion",
-  "version":      "0.1.3",
+  "version":      "1.0.0",
   "author":       "opentable",
   "license":      "MIT",
   "summary":      "Module for managing the installation and upgrade of puppet",
   "source":       "https://github.com/opentable/puppet-puppetversion",
   "project_page": "https://github.com/opentable/puppet-puppetversion",
   "issues_url":   "https://github.com/opentable/puppet-puppetversion/issues",
+  "tags": ["windows","redhat","debian","puppet", "upgrades"],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
