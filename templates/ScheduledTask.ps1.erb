@@ -3,6 +3,10 @@ param (
 [string]$exists
 )
 
+#
+# Powershell script to create a scheduled task that upgrades puppet within (by default) 3 minutes
+#
+
 $scheduledTask = & C:\Windows\system32\schtasks.exe /query /V /FO list /TN "puppet upgrade task"
 
 if ( $ensure -eq "present" ) {
@@ -66,5 +70,3 @@ if ( $exists -eq "True" ) {
   }
 
 }
-
-
