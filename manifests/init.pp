@@ -22,6 +22,9 @@
 # [*download_source]
 # (Windows only) - The source location where the msi can be found
 #
+# [*ruby_augeas_version*]
+# (Debian only) - The version of ruby-augeas to install from RubyGems.
+#
 # === Examples
 #
 # Installing puppet to a specified version
@@ -34,7 +37,8 @@ class puppetversion(
   $version = $puppetversion::params::version,
   $proxy_address = $puppetversion::params::proxy_address,
   $download_source = $puppetversion::params::download_source,
-  $time_delay = $puppetversion::params::time_delay
+  $time_delay = $puppetversion::params::time_delay,
+  $ruby_augeas_version = $puppetversion::params::ruby_augeas_version
 ) inherits puppetversion::params {
 
   case downcase($::osfamily) {
@@ -71,6 +75,19 @@ class puppetversion(
         require => Package['puppet'],
       }
 
+      $ruby_version_array = split($::rubyversion, '[.]')
+      if $ruby_version_array[0] >= 2 {
+        package { ['pkg-config', 'libaugeas-dev']:
+          ensure => present,
+          before => Package['ruby-augeas']
+        }
+
+        package { 'ruby-augeas':
+          ensure   => present,
+          provider => 'gem',
+          install_options => [ { '-v' => $ruby_augeas_version } ]
+        }
+      }
     }
     'redhat': {
 
