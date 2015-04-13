@@ -85,7 +85,7 @@ class puppetversion(
         package { 'ruby-augeas':
           ensure   => present,
           provider => 'gem',
-          install_options => [ { '-v' => $ruby_augeas_version } ]
+          install_options => { '-v' => $ruby_augeas_version }
         }
       }
     }
