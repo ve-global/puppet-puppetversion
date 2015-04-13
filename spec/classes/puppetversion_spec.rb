@@ -7,7 +7,8 @@ describe 'puppetversion', :type => :class do
         :osfamily        => 'debian',
         :lsbdistid       => 'ubuntu',
         :lsbdistcodename => 'squeeze',
-        :agent_rundir    => '/var/lib/puppet/run'
+        :agent_rundir    => '/var/lib/puppet/run',
+        :rubyversion     => '1.9.3'
     } }
 
     let(:params) {{ :version => '3.4.2'}}
@@ -29,6 +30,7 @@ describe 'puppetversion', :type => :class do
         :lsbdistid       => 'ubuntu',
         :lsbdistcodename => 'squeeze',
         :agent_rundir    => 'xxxxx',
+        :rubyversion     => '1.9.3'
     } }
 
     let(:params) {{ :version => '3.4.2'}}
@@ -41,7 +43,8 @@ describe 'puppetversion', :type => :class do
         :osfamily        => 'debian',
         :lsbdistid       => 'ubuntu',
         :lsbdistcodename => 'squeeze',
-        :agent_rundir    => '/var/lib/puppet/run'
+        :agent_rundir    => '/var/lib/puppet/run',
+        :rubyversion     => '1.9.3'
     } }
 
     let(:params) {{ :version => '3.4.3'}}
@@ -55,6 +58,31 @@ describe 'puppetversion', :type => :class do
     it { should contain_exec('rm_duplicate_puppet_source').with_path('/usr/local/bin:/bin:/usr/bin').with_command('sed -i \'s:deb\ http\:\/\/apt.puppetlabs.com\/ precise main::\' /etc/apt/sources.list').with_onlyif('grep \'deb http://apt.puppetlabs.com/ precise main\' /etc/apt/sources.list') }
 
     it { should contain_ini_setting('update init.d script PIDFILE to use agent_rundir').with_path('/etc/init.d/puppet').with_ensure('present').with_section('').with_setting('PIDFILE').with_value('"/var/lib/puppet/run/${NAME}.pid"').with_require('Package[puppet]') }
+  end
+
+  context 'when running Ruby >= 2.0.0 on Ubuntu/Debian' do
+    let(:facts) do
+      {
+        :osfamily        => 'debian',
+        :lsbdistid       => 'ubuntu',
+        :lsbdistcodename => 'squeeze',
+        :agent_rundir    => '/var/lib/puppet/run',
+        :rubyversion     => '2.0.0'
+      }
+    end
+
+    it do
+      should contain_package('ruby-augeas')
+        .with_ensure('present')
+        .with_provider('gem')
+        .with_install_options({'-v' => '0.5.0'})
+    end
+
+    it do
+      should contain_package('pkg-config', 'libaugeas-dev')
+        .with_ensure('present')
+        .with_before('Package[ruby-augeas]')
+    end
   end
 
   context 'when trying to ensure the puppet version is 3.4.2 on redhat' do
