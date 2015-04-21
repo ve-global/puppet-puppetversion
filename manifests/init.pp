@@ -75,8 +75,7 @@ class puppetversion(
         require => Package['puppet'],
       }
 
-      $ruby_version_array = split($::rubyversion, '[.]')
-      if $ruby_version_array[0] >= 2 {
+      if versioncmp($::rubyversion, '2.0.0') <= 0 {
         package { ['pkg-config', 'libaugeas-dev']:
           ensure => present,
           before => Package['ruby-augeas']
