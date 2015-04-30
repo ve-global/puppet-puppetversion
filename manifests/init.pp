@@ -56,7 +56,7 @@ class puppetversion(
       apt::source { 'puppetlabs':
         location    => 'http://apt.puppetlabs.com',
         repos       => 'main dependencies',
-        key         => '4BD6EC30',
+        key         => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
         key_content => template('puppetversion/puppetlabs.gpg'),
         require     => Exec['rm_duplicate_puppet_source']
       }
