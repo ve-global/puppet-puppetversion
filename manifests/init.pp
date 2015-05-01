@@ -81,11 +81,13 @@ class puppetversion(
           before => Package['ruby-augeas']
         }
 
+        # lint:ignore:arrow_alignment
         package { 'ruby-augeas':
-          ensure   => present,
-          provider => 'gem',
+          ensure          => present,
+          provider        => 'gem',
           install_options => { '-v' => $ruby_augeas_version }
         }
+        # lint:endignore
       }
     }
     'redhat': {
