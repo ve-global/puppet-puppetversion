@@ -17,7 +17,7 @@ describe 'puppetversion', :type => :class do
 
     it { should contain_package('puppet-common').with_ensure('3.4.2-1puppetlabs1').that_requires('Apt::Source[puppetlabs]') }
 
-    it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com').with_repos('main dependencies').with_key('4BD6EC30').with_key_content(/----BEGIN PGP PUBLIC KEY BLOCK-----/).that_requires('Exec[rm_duplicate_puppet_source]') }
+    it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com').with_repos('main dependencies').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30').with_key_content(/----BEGIN PGP PUBLIC KEY BLOCK-----/).that_requires('Exec[rm_duplicate_puppet_source]') }
 
     it { should contain_exec('rm_duplicate_puppet_source').with_path('/usr/local/bin:/bin:/usr/bin').with_command('sed -i \'s:deb\ http\:\/\/apt.puppetlabs.com\/ precise main::\' /etc/apt/sources.list').with_onlyif('grep \'deb http://apt.puppetlabs.com/ precise main\' /etc/apt/sources.list') }
 
@@ -53,7 +53,7 @@ describe 'puppetversion', :type => :class do
 
     it { should contain_package('puppet-common').with_ensure('3.4.3-1puppetlabs1').that_requires('Apt::Source[puppetlabs]') }
 
-    it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com').with_repos('main dependencies').with_key('4BD6EC30').with_key_content(/----BEGIN PGP PUBLIC KEY BLOCK-----/).that_requires('Exec[rm_duplicate_puppet_source]') }
+    it { should contain_apt__source('puppetlabs').with_location('http://apt.puppetlabs.com').with_repos('main dependencies').with_key('47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30').with_key_content(/----BEGIN PGP PUBLIC KEY BLOCK-----/).that_requires('Exec[rm_duplicate_puppet_source]') }
 
     it { should contain_exec('rm_duplicate_puppet_source').with_path('/usr/local/bin:/bin:/usr/bin').with_command('sed -i \'s:deb\ http\:\/\/apt.puppetlabs.com\/ precise main::\' /etc/apt/sources.list').with_onlyif('grep \'deb http://apt.puppetlabs.com/ precise main\' /etc/apt/sources.list') }
 
