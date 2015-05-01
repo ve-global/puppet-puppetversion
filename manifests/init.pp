@@ -56,7 +56,7 @@ class puppetversion(
       apt::source { 'puppetlabs':
         location    => 'http://apt.puppetlabs.com',
         repos       => 'main dependencies',
-        key         => '4BD6EC30',
+        key         => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
         key_content => template('puppetversion/puppetlabs.gpg'),
         require     => Exec['rm_duplicate_puppet_source']
       }
@@ -75,7 +75,7 @@ class puppetversion(
         require => Package['puppet'],
       }
 
-      if versioncmp($::rubyversion, '2.0.0') <= 0 {
+      if versioncmp($::rubyversion, '2.0.0') >= 0 {
         package { ['pkg-config', 'build-essential', 'libaugeas-dev']:
           ensure => present,
           before => Package['ruby-augeas']
