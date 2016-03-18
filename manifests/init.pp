@@ -16,11 +16,14 @@
 # [*version*]
 # The version of puppet to be installed
 #
-# [*proxy_adress*]
+# [*proxy_address*]
 # (Windows only) - The proxy address to use when downloading the msi
 #
 # [*download_source]
 # (Windows only) - The source location where the msi can be found
+#
+# [*time_delay*]
+# (Windows only) - How many minutes in the future should we schedule the upgrade task for
 #
 # [*ruby_augeas_version*]
 # (Debian only) - The version of ruby-augeas to install from RubyGems.

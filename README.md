@@ -37,7 +37,7 @@ with all of those edge cases, making upgrades as simple as they should be.
 To upgrade to a new puppetversion
 
 ```puppet
-   puppetversion { 'version 3.4.3':
+   class { 'puppetversion':
      version => '3.4.3'
    }
 ```
@@ -53,6 +53,17 @@ The puppetversion module guides the upgrade of puppet.
 #####`version`
 The version that you want to upgrade to
 
+#####`proxy_address`
+(Windows only) - The proxy address to use when downloading the msi
+
+#####`download_source`
+(Windows only) - The source location where the msi can be found
+
+#####`time_delay`
+(Windows only) - How many minutes in the future should we schedule the upgrade task for
+
+#####`ruby_augeas_version`
+(Debian only) - The version of ruby-augeas to install from RubyGems.
 
 ##Reference
 
@@ -68,6 +79,8 @@ This module is tested on the following platforms:
 * CentOS 6
 * Ubuntu 12.04
 * Ubuntu 14.04
+* Windows 2008 R2
+* Windows 2012 R2
 
 It is tested with the OSS version of Puppet only.
 
