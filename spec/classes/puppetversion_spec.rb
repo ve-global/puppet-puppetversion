@@ -87,7 +87,7 @@ describe 'puppetversion', :type => :class do
 
   context 'when trying to ensure the puppet version is 3.4.2 on redhat/centos 6' do
     let(:facts) {{
-      :osfamily                  => 'redhat',
+      :osfamily                  => 'RedHat',
       :operatingsystem           => 'centos',
       :os_maj_version            => '6',
       :architecture              => 'amd64',
@@ -105,7 +105,7 @@ describe 'puppetversion', :type => :class do
 
   context 'when trying to ensure the puppet version is 3.4.2 on centos 7' do
     let(:facts) {{
-      :osfamily                  => 'redhat',
+      :osfamily                  => 'RedHat',
       :operatingsystem           => 'centos',
       :os_maj_version            => '7',
       :architecture              => 'amd64',
@@ -135,7 +135,7 @@ describe 'puppetversion', :type => :class do
     )}
 
     it { should contain_exec('create scheduled task').with(
-      'command'     => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
+      'command'     => 'C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
       'refreshonly' => 'true'
     )}
   end

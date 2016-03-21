@@ -48,7 +48,7 @@ class puppetversion(
     'debian': {
       validate_absolute_path($::agent_rundir)
 
-      $puppetPackages = ['puppet','puppet-common']
+      $puppet_packages = ['puppet','puppet-common']
 
       exec { 'rm_duplicate_puppet_source':
         path    => '/usr/local/bin:/bin:/usr/bin',
@@ -61,12 +61,12 @@ class puppetversion(
         repos       => 'main dependencies',
         key         => '47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30',
         key_content => template('puppetversion/puppetlabs.gpg'),
-        require     => Exec['rm_duplicate_puppet_source']
+        require     => Exec['rm_duplicate_puppet_source'],
       }
 
-      package { $puppetPackages:
+      package { $puppet_packages:
         ensure  => "${version}-1puppetlabs1",
-        require => Apt::Source['puppetlabs']
+        require => Apt::Source['puppetlabs'],
       }
 
       ini_setting { 'update init.d script PIDFILE to use agent_rundir':
@@ -81,25 +81,23 @@ class puppetversion(
       if versioncmp($::rubyversion, '2.0.0') >= 0 {
         package { ['pkg-config', 'build-essential', 'libaugeas-dev']:
           ensure => present,
-          before => Package['ruby-augeas']
+          before => Package['ruby-augeas'],
         }
 
-        # lint:ignore:arrow_alignment
         package { 'ruby-augeas':
           ensure          => present,
           provider        => 'gem',
-          install_options => { '-v' => $ruby_augeas_version }
+          install_options => { '-v' => $ruby_augeas_version },
         }
-        # lint:endignore
       }
     }
     'redhat': {
 
-      class {'puppetlabs_yum':}
+      class { '::puppetlabs_yum': }
 
       package{ 'puppet' :
         ensure  => "${version}-1.el${::operatingsystemmajrelease}",
-        require => Class['puppetlabs_yum']
+        require => Class['puppetlabs_yum'],
       }
 
     }
@@ -112,7 +110,7 @@ class puppetversion(
         file { 'UpgradePuppet script':
           ensure  => present,
           path    => 'C:/Windows/Temp/UpgradePuppet.ps1',
-          content => template('puppetversion/UpgradePuppet.ps1.erb')
+          content => template('puppetversion/UpgradePuppet.ps1.erb'),
         }
 
         # Using another powershell script to create a scheduled task to run the upgrade script.
@@ -127,13 +125,14 @@ class puppetversion(
           path    => 'C:/Windows/Temp/ScheduledTask.ps1',
           content => template('puppetversion/ScheduledTask.ps1.erb'),
           require => File['UpgradePuppet script'],
-          notify  => Exec['create scheduled task']
+          notify  => Exec['create scheduled task'],
         }
 
         exec { 'create scheduled task':
-          command     => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
+          command     => 'C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
+          provider    => powershell,
           require     => File['ScheduleTask script'],
-          refreshonly => true
+          refreshonly => true,
         }
 
       } else {
@@ -145,9 +144,10 @@ class puppetversion(
 
         # Yes we still have to exec to remove because scheduled_task { ensure => absent } doesn't work!
         exec { 'remove scheduled task':
-          command => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -ensure absent',
-          before  => File['ScheduleTask script'],
-          onlyif  => 'C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NonInteractive -NoLogo -ExecutionPolicy Bypass -File C:\Windows\Temp\ScheduledTask.ps1 -exists True'
+          command  => 'C:\Windows\Temp\ScheduledTask.ps1 -ensure absent',
+          provider => powershell,
+          before   => File['ScheduleTask script'],
+          onlyif   => 'C:\Windows\Temp\ScheduledTask.ps1 -exists True',
         }
 
         file { 'ScheduleTask script':
