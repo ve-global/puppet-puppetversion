@@ -85,18 +85,37 @@ describe 'puppetversion', :type => :class do
     end
   end
 
-  context 'when trying to ensure the puppet version is 3.4.2 on redhat' do
+  context 'when trying to ensure the puppet version is 3.4.2 on redhat/centos 6' do
     let(:facts) {{
-      :osfamily        => 'redhat',
-      :operatingsystem => 'centos',
-      :os_maj_version  => '6',
-      :architecture    => 'amd64',
-      :pper_installed  => 'false'
+      :osfamily                  => 'redhat',
+      :operatingsystem           => 'centos',
+      :os_maj_version            => '6',
+      :architecture              => 'amd64',
+      :pper_installed            => 'false',
+      :operatingsystemmajrelease => '6'
     }}
 
     let(:params) {{ :version => '3.4.2'}}
 
     it { should contain_package('puppet').with_ensure('3.4.2-1.el6').that_requires('Class[puppetlabs_yum]') }
+
+    it { should contain_class('puppetlabs_yum') }
+
+  end
+
+  context 'when trying to ensure the puppet version is 3.4.2 on centos 7' do
+    let(:facts) {{
+      :osfamily                  => 'redhat',
+      :operatingsystem           => 'centos',
+      :os_maj_version            => '7',
+      :architecture              => 'amd64',
+      :pper_installed            => 'false',
+      :operatingsystemmajrelease => '7'
+    }}
+
+    let(:params) {{ :version => '3.4.2'}}
+
+    it { should contain_package('puppet').with_ensure('3.4.2-1.el7').that_requires('Class[puppetlabs_yum]') }
 
     it { should contain_class('puppetlabs_yum') }
 
