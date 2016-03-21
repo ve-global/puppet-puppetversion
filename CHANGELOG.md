@@ -1,3 +1,13 @@
+#2016-03-21 - Release 1.1.0
+###Summary
+
+Lots of small improvements
+
+###Improvements
+ - ruby 2 support
+ - updated apt dependency to <3.0.0
+ - centos 7 support
+
 ##2014-10-10 - Release 1.0.0
 ###Summary
 
