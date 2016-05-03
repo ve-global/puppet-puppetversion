@@ -7,9 +7,9 @@ param (
 )
 
 if ($architecture -eq 'x86') {
-  $puppetMsiFileName='puppet-$version.msi'
+  $puppetMsiFileName="puppet-$version.msi"
 } else {
-  $puppetMsiFileName='puppet-$version-$architecture.msi'
+  $puppetMsiFileName="puppet-$version-$architecture.msi"
 }
 
 $sourceMsi = "<%= @download_source %>/$puppetMsiFileName"
