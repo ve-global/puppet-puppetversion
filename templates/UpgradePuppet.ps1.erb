@@ -1,10 +1,19 @@
 param (
   [Parameter(Mandatory=$true)]
-  [string]$version
+  [string]$version,
+
+  [Parameter(Mandatory=$true)]
+  [string]$architecture
 )
 
-$sourceMsi = "<%= @download_source %>/puppet-$version.msi"
-$destMsi = "C:\Windows\Temp\puppet-$version.msi"
+if ($architecture -eq 'x86') {
+  $puppetMsiFileName='puppet-$version.msi'
+} else {
+  $puppetMsiFileName='puppet-$version-$architecture.msi'
+}
+
+$sourceMsi = "<%= @download_source %>/$puppetMsiFileName"
+$destMsi = "C:\Windows\Temp\$puppetMsiFileName"
 
 $majorVersion = [System.Environment]::OSVersion.Version.Major
 if ($majorVersion -eq 5) {
@@ -26,7 +35,7 @@ if ($proxyAddress -ne '') {
   if (!$proxyAddress.StartsWith('http://')) {
     $proxyAddress = 'http://' + $proxyAddress
   }
-  
+
   $proxy = new-object System.Net.WebProxy
   $proxy.Address = $proxyAddress
   $wc.proxy = $proxy
@@ -37,7 +46,7 @@ $wc.DownloadFile($sourceMsi, $destMsi)
 Copy-Item "$sourceConf" -Destination $destConf
 
 Wait-Process -name msiexec -timeout 30 -ErrorAction SilentlyContinue
-$ip = (Start-Process -FilePath "msiexec.exe" -ArgumentList "/i C:\Windows\Temp\puppet-$version.msi /qn /l*v $installLog" -Wait -Passthru).ExitCode
+$ip = (Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $destMsi /qn /l*v $installLog" -Wait -Passthru).ExitCode
 if ( $ip -ne 0 ) { Exit 1 }
 
 Copy-Item $destConf -Destination "$sourceConf" -Force

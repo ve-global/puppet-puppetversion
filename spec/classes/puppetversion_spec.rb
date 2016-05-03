@@ -140,6 +140,26 @@ describe 'puppetversion', :type => :class do
     )}
   end
 
+  context 'when trying to ensure the puppet version is 3.4.2 on windows 64-bit' do
+    let(:facts) {{
+      :osfamily      => 'windows',
+      :puppetversion => '3.4.1',
+      :architecture  => 'x64'
+    }}
+
+    let(:params) {{ :version => '3.4.2'}}
+
+    it { should contain_file('UpgradePuppet script').with(
+      'ensure' => 'present',
+      'path'   => 'C:/Windows/Temp/UpgradePuppet.ps1'
+    )}
+
+    it { should contain_exec('create scheduled task').with(
+      'command'     => 'C:\Windows\Temp\ScheduledTask.ps1 -ensure present',
+      'refreshonly' => 'true'
+    )}
+  end
+
   #TODO: test the param validation
 
 end

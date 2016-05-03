@@ -16,6 +16,9 @@
 # [*version*]
 # The version of puppet to be installed
 #
+# [*architecture*]
+# The Architecture to install
+#
 # [*proxy_address*]
 # (Windows only) - The proxy address to use when downloading the msi
 #
@@ -38,6 +41,7 @@
 #
 class puppetversion(
   $version = $puppetversion::params::version,
+  $architecture  = $puppetversion::params::architecture,
   $proxy_address = $puppetversion::params::proxy_address,
   $download_source = $puppetversion::params::download_source,
   $time_delay = $puppetversion::params::time_delay,

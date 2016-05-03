@@ -10,10 +10,11 @@
 class puppetversion::params {
 
   $version = '3.4.2'
+  $architecture = 'x86'
   $proxy_address = ''
   $download_source = 'https://downloads.puppetlabs.com/windows'
 
   $time_delay =  3
-
+  
   $ruby_augeas_version = '0.5.0'
 }
