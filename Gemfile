@@ -21,10 +21,8 @@ group :test do
     gem 'json_pure', '<= 2.0.1',                                    :require => false
   end
 
-
   gem 'faraday', '~> 0.9',                                          :require => false
   gem 'faraday_middleware', '~> 0.9',                               :require => false
-
 
   gem 'puppetlabs_spec_helper', '~> 1.2',                           :require => false
   gem 'puppet-lint', '~> 2.0',                                      :require => false
@@ -33,7 +31,6 @@ group :test do
 
   gem 'metadata-json-lint',                                         :require => false
   gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
-  gem 'rubocop', '0.37.0',                                          :require => false
 
   gem 'rspec-puppet-utils',                                         :require => false
   gem 'puppet-lint-absolute_classname-check',                       :require => false
@@ -46,9 +43,10 @@ group :test do
 end
 
 group :development do
-  gem 'travis',       :require => false
-  gem 'travis-lint',  :require => false
-  gem 'guard-rake',   :require => false
+  gem 'travis',            :require => false
+  gem 'travis-lint',       :require => false
+  gem 'guard-rake',        :require => false
+  gem 'rubocop', '0.37.0', :require => false
 end
 
 group :system_tests do
