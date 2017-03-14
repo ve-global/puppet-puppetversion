@@ -18,7 +18,7 @@ group :test do
   gem 'rake', '~> 11.3',                                            :require => false
   gem 'rspec', '~> 3.5',                                            :require => false
 
-  if ENV['RUBY_VERSION'] = '1.9'
+  if ENV['RUBY_VERSION'] == '1.9'
     gem 'json_pure', '<= 2.0.1',                                    :require => false
   elsif rub_ver.include?(ENV['RUBY_VERSION'])
     gem 'Syck',                                                     :ensure => :absent
