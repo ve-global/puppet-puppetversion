@@ -1,5 +1,6 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 ENV['RUBY_VERSION'] = `ruby -v`
+rub_ver = ['2,1,7','2.2.0']
 
 def location_for(place, fake_version = nil)
   if place =~ %r{/^(git[:@][^#]*)#(.*)/}
@@ -17,8 +18,10 @@ group :test do
   gem 'rake', '~> 11.3',                                            :require => false
   gem 'rspec', '~> 3.5',                                            :require => false
 
-  if ENV['RUBY_VERSION'] =~ /^1\.9/
+  if ENV['RUBY_VERSION'] = '1.9'
     gem 'json_pure', '<= 2.0.1',                                    :require => false
+  elsif rub_ver.include?(ENV['RUBY_VERSION'])
+    gem 'Syck',                                                     :ensure => :absent
   end
 
   gem 'faraday', '~> 0.9',                                          :require => false
@@ -73,6 +76,5 @@ if puppetversion = ENV['PUPPET_GEM_VERSION']
 else
   gem 'puppet', '> 3.0.0', '< 4.0.0', :require => false
 end
-
 
 # vim:ft=ruby
