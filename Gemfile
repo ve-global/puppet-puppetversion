@@ -1,6 +1,6 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 ENV['RUBY_VERSION'] = `ruby -v`
-rub_ver = ['2,1,7','2.2.0']
+rub_ver = ['2,1,7','2.2.3']
 
 def location_for(place, fake_version = nil)
   if place =~ %r{/^(git[:@][^#]*)#(.*)/}
