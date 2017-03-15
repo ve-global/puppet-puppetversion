@@ -1,5 +1,5 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
-ENV['RUBY_VERSION'] = `ruby -v`
+
 
 def location_for(place, fake_version = nil)
   if place =~ %r{/^(git[:@][^#]*)#(.*)/}
@@ -17,9 +17,9 @@ group :test do
   gem 'rake', '~> 11.3',                                            :require => false
   gem 'rspec', '~> 3.5',                                            :require => false
 
-  if ENV['RUBY_VERSION'] =~ /^1\.9/
+  if RUBY_VERSION =~ /^1\.9/
     gem 'json_pure', '<= 2.0.1',                                    :require => false
-  elsif ENV['RUBY_VERSION'] =~ /^2\./
+  elsif RUBY_VERSION =~ /^2\./
     gem 'Syck',                                                     :ensure  => :installed
   end
 
