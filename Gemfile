@@ -17,9 +17,9 @@ group :test do
   gem 'rake', '~> 11.3',                                            :require => false
   gem 'rspec', '~> 3.5',                                            :require => false
 
-  if RUBY_VERSION =~ /^1\.9/
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.0.0')
     gem 'json_pure', '<= 2.0.1',                                    :require => false
-  elsif RUBY_VERSION =~ /^2\./
+  elsif Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.0.0')
     gem 'Syck',                                                     :ensure  => :installed
   end
 
