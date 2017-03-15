@@ -67,8 +67,14 @@ class puppetversion(
         default => undef,
       }
 
+      if $::lsbdistrelease == '16.04' {
+        $full_version = $version
+      } else {
+        $full_version = "${version}-1puppetlabs1"
+      }
+
       package { $puppet_packages:
-        ensure  => "${version}-1puppetlabs1",
+        ensure  => "${full_version}",
         require => $package_require,
       }
 
