@@ -1,5 +1,5 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
-ENV['RUBY_VERSION'] = `ruby -v`
+
 
 def location_for(place, fake_version = nil)
   if place =~ %r{/^(git[:@][^#]*)#(.*)/}
@@ -17,7 +17,7 @@ group :test do
   gem 'rake', '~> 11.3',                                            :require => false
   gem 'rspec', '~> 3.5',                                            :require => false
 
-  if ENV['RUBY_VERSION'] =~ /^1\.9/
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.0.0')
     gem 'json_pure', '<= 2.0.1',                                    :require => false
   end
 
@@ -40,6 +40,7 @@ group :test do
   gem 'puppet-lint-classes_and_types_beginning_with_digits-check',  :require => false
   gem 'puppet-lint-unquoted_string-check',                          :require => false
   gem 'puppet-lint-variable_contains_upcase',                       :require => false
+  gem 'safe_yaml', '~>1.0.4'
 end
 
 group :development do
