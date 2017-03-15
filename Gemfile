@@ -21,10 +21,6 @@ group :test do
     gem 'json_pure', '<= 2.0.1',                                    :require => false
   end
 
-  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.0.0')
-    gem 'syck'
-  end
-
   gem 'faraday', '~> 0.9',                                          :require => false
   gem 'faraday_middleware', '~> 0.9',                               :require => false
 
@@ -44,6 +40,7 @@ group :test do
   gem 'puppet-lint-classes_and_types_beginning_with_digits-check',  :require => false
   gem 'puppet-lint-unquoted_string-check',                          :require => false
   gem 'puppet-lint-variable_contains_upcase',                       :require => false
+  gem 'safe_yaml', '~>1.0.4'
 end
 
 group :development do
