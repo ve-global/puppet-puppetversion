@@ -28,6 +28,9 @@
 # [*ruby_augeas_version*]
 # (Debian only) - The version of ruby-augeas to install from RubyGems.
 #
+# [*debian_dependencies*]
+# (Debian only) - The dependencies require by ruby-augeas.
+#
 # === Examples
 #
 # Installing puppet to a specified version
@@ -37,12 +40,13 @@
 # }
 #
 class puppetversion(
-  $version = $puppetversion::params::version,
-  $proxy_address = $puppetversion::params::proxy_address,
-  $download_source = $puppetversion::params::download_source,
-  $time_delay = $puppetversion::params::time_delay,
+  $version             = $puppetversion::params::version,
+  $proxy_address       = $puppetversion::params::proxy_address,
+  $download_source     = $puppetversion::params::download_source,
+  $time_delay          = $puppetversion::params::time_delay,
   $ruby_augeas_version = $puppetversion::params::ruby_augeas_version,
-  $manage_repo = $puppetversion::params::manage_repo
+  $manage_repo         = $puppetversion::params::manage_repo,
+  $debian_dependencies = $puppetversion::params::debian_dependencies,
 ) inherits puppetversion::params {
 
   case downcase($::osfamily) {
@@ -89,15 +93,15 @@ class puppetversion(
 
       if versioncmp($::rubyversion, '2.0.0') >= 0 {
 
-        ensure_resource('Package', ['pkg-config', 'build-essential', 'libaugeas-dev'], {
+        ensure_resource('Package', $debian_dependencies, {
           ensure => present,
-          before => Package['ruby-augeas'],
         })
 
         package { 'ruby-augeas':
           ensure          => present,
           provider        => 'gem',
           install_options => { '-v' => $ruby_augeas_version },
+          require         => Package[$debian_dependencies],
         }
       }
     }
