@@ -16,4 +16,5 @@ class puppetversion::params {
 
   $ruby_augeas_version = '0.5.0'
   $manage_repo = true
+  $debian_dependencies = ['pkg-config', 'build-essential', 'libaugeas-dev']
 }
